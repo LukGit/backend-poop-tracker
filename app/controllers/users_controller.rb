@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  skip_before_action :authorized, only: [:create]
+  skip_before_action :authorized, only: [:create, :signup]
 
   def create
     # this method is used when user login
@@ -24,7 +24,7 @@ class UsersController < ApplicationController
     # this method is called when user refresh on browser
     # use token send to find user and send back same JSON data as successful login
     token = request.headers['Authorization'].split(' ').last
-    decoded_token = JWT.decode(token, 'g0lf_3uck$t', true, { algorithm: 'HS256' })
+    decoded_token = JWT.decode(token, 'p00p_track$', true, { algorithm: 'HS256' })
     id = decoded_token.first['user_id']
 
     user = User.find(id)
@@ -53,7 +53,7 @@ class UsersController < ApplicationController
     # this doesn't work
     # render jason: { id: user.id, username: user.username, email: user.email, handicap: user.my_handicap, clubs: user.clubs}
   end
-  
+
   def user_params
     params.require(:user).permit(:username, :password, :zipcode)
   end
